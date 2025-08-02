@@ -1,0 +1,136 @@
+<html>
+    <head>
+        <title>Random Quote Generator</title>
+      </head>
+      <body>
+        <style>
+        body {
+      font-family: Arial, sans-serif;
+      background: rgb(0, 40, 105);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+      margin: 0; 
+      height: 100px;
+      padding-top:10px;
+    }
+    .header h1 {
+            font-size: 1.4em; 
+            color: yellowgreen; 
+            margin-top: 10px;
+            letter-spacing: 1px;
+            text-align: center;
+            width: 100%;
+            max-width: 600px; 
+            padding-right: 100px;
+        }
+        .header p {
+            font-size: 1.1em;
+            color: pink;
+            text-align: center;
+            width: 100%;
+            max-width: 600px; 
+            padding-left: 20px; 
+        }
+    .quote-container {
+      background: grey;
+      max-width: 400px;
+      width: 100%;
+      padding: 40px 102px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      text-align: centre;
+       border-style:inset;
+      border-width: 10px;
+      border-color: rgb(2, 22, 51);
+    }
+    .quote-text {
+      font-size: 1.5rem;
+      font-style: italic;
+      color: yellow;
+      margin-bottom: 20px;
+      min-height: 90px;
+    }
+    .quote-author {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: black;
+      margin-bottom: 5px;
+    }
+    .quote-tag {
+      font-size: 0.9rem;
+      color: grey;
+      margin-bottom: 25px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    button {
+      background: #001b50;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: rgb(29, 107, 232);
+    }
+  </style>
+  <div class="container">
+        <div class="header">
+            <p style="color: yellowgreen; font-size: 2.1em; margin-top: 5px;">JavaScript Developer Project<p>
+            <h1>Random Quote Generator</h1>
+            <p>JS . API . HTML . CSS</p>
+        </div>
+  <div class="quote-container">
+    <div class="quote-text" id="quote"></div>
+    <div class="quote-author" id="author"></div>
+    <div class="quote-tag" id="tag"></div>
+    <div class="buttons">
+      <button id="random-btn">Random</button>
+      <button id="copy-btn">Copy</button>
+    </div>
+  </div>
+  <script>
+    let quotes = [];
+    const quoteEl = document.getElementById('quote');
+    const authorEl = document.getElementById('author');
+    const tagEl = document.getElementById('tag');
+    const randomBtn = document.getElementById('random-btn');
+    const copyBtn = document.getElementById('copy-btn');
+
+    async function fetchQuotes() {
+        const response = await fetch('random-quotes.json');
+        quotes = await response.json();
+        showRandomQuote();
+    }
+    function showRandomQuote() 
+    {
+      if (quotes.length === 0) return;
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      const quote = quotes[randomIndex];
+      quoteEl.textContent = `"${quote.quote}"`;
+      authorEl.textContent = quote.author ? `— ${quote.author}` : '';
+      tagEl.textContent = quote.tag ? `Category: ${quote.tag}` : '';
+    }
+    function copyQuote() {
+      const textToCopy = `${quoteEl.textContent} ${authorEl.textContent}`;
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        alert('Quote copied to clipboard!');
+      }).catch(() => {
+        alert('Failed to copy quote.');
+      });
+    }
+    randomBtn.addEventListener('click', showRandomQuote);
+    copyBtn.addEventListener('click', copyQuote);
+    fetchQuotes();
+  </script>
+</body>
+</html>
